@@ -2,7 +2,6 @@ package com.example.poster.retrofitpbapi;
 
 
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,12 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity {
     public TextView resultOfExchange;
     public TextView titleCurrContainer;
     private Button showCurrencyExchanger;
@@ -39,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayAdapter<String> spinnerAdapter;
     private FragmentManager manager = getSupportFragmentManager();
     private WorkWithMaps workWithMaps;
-    private GoogleMap mMap;
+    private int couterMapVisible = 0;
+    private LinearLayout mapContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +46,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         innitWidgets();
         new LoadDataFromPrivatBank().execute();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
         showCurrencyExchanger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 checkCurrContainerVisible(counter);
             }
         });
+
         resultShowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +71,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 new Network().getPrivatOtdel();
+                couterMapVisible++;
+                checkMapVisible(couterMapVisible);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new WorkWithMaps(getBaseContext())).commit();
             }
         });
+    }
+
+    private void checkMapVisible(int couterMapVisible) {
+        if (couterMapVisible % 2 == 1){
+            mapContainer.setVisibility(View.VISIBLE);
+        }else{
+            mapContainer.setVisibility(View.GONE);
+        }
     }
 
     private boolean validateData() {
@@ -191,11 +197,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mProgresBar = (ProgressBar) findViewById(R.id.progressBar);
         mProgresBar.setVisibility(View.GONE);
         currCount = (EditText) findViewById(R.id.countEditText);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        mapContainer = (LinearLayout) findViewById(R.id.container);
+        mapContainer.setVisibility(View.GONE);
     }
 
     /*public void geodecoding(){
