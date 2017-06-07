@@ -1,12 +1,11 @@
 package com.example.poster.retrofitpbapi;
 
-import android.location.Address;
-import android.location.Geocoder;
+
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,14 +18,9 @@ import android.widget.Toast;
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
-import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     public TextView resultOfExchange;
     public TextView titleCurrContainer;
     private Button showCurrencyExchanger;
@@ -38,13 +32,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private EditText currCount;
 
     private ProgressBar mProgresBar;
-    private GoogleMap mMap;
-    private MarkerOptions marker;
-    private double lat;
-    private double lng;
     public String[] titlesForCcu;
     private int counter = 0;
     private ArrayAdapter<String> spinnerAdapter;
+    private FragmentManager manager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +185,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         currCount = (EditText) findViewById(R.id.countEditText);
     }
 
-    public void geodecoding(){
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    /*public void geodecoding(){
         Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
         try{
             List<Address> addresses = geocoder.getFromLocationName("Відінська 13", 1);
@@ -207,17 +203,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    /** Called when the map is ready. */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        // Add some markers to the map, and add a data object to each marker.
-        LatLng curPos = new LatLng(lat, lng);
-
-        mMap.addMarker(new MarkerOptions().position(curPos));
-    }
+    }*/
 
     public class LoadDataFromPrivatBank extends AsyncTask<Void, Void, Void> {
 
