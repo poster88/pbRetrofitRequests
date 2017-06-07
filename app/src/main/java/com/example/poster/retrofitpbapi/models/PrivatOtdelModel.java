@@ -12,7 +12,7 @@ public class PrivatOtdelModel {
     private String city;
     private int index;
     private String phone;
-    private  String email;
+    private String email;
     private String address;
 
     public String getName() {

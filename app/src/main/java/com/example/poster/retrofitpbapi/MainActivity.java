@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
+        showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Network().getPrivatOtdel();
+            }
+        });
     }
 
     private boolean validateData() {
@@ -92,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         return String.format("%.4f", result) + " " + titlesForCcu[secPosition];
     }
+
     private double checkBaseCcu(int basePosition, int secPosition){
         String buyCcuForUSD = "";
         double result = 0;

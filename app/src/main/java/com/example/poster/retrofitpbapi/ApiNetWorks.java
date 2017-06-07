@@ -14,7 +14,7 @@ public interface ApiNetWorks {
     @GET("p24api/pubinfo?json&exchange")
     Call<List<ExchangeModel>> getExchangeRate(@Query("coursid") int coursId);
 
-    /*@GET("p24api/pboffice?json&city=")
-    Call<List<PrivatOtdelModel>> getPrivatOtdel(@Query())*/
+    @GET("p24api/pboffice?json&city=Ровно&address=")
+    Call<List<PrivatOtdelModel>> getPrivatOtdel(@Query("address") String address);
 }
 
