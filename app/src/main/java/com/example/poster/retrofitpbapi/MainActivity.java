@@ -2,6 +2,7 @@ package com.example.poster.retrofitpbapi;
 
 
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int counter = 0;
     private ArrayAdapter<String> spinnerAdapter;
     private FragmentManager manager = getSupportFragmentManager();
+    private WorkWithMaps workWithMaps;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         innitWidgets();
         new LoadDataFromPrivatBank().execute();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         showCurrencyExchanger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        mMap = googleMap;
     }
 
     /*public void geodecoding(){
