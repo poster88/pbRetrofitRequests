@@ -124,11 +124,12 @@
         android:layout_marginTop="6dp"
         android:text="Отобразить отделения на карте" />
 
+
     <LinearLayout
         android:id="@+id/container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/showMap"/>
 
 </RelativeLayout>

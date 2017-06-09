@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     public TextView resultOfExchange;
     public TextView titleCurrContainer;
     private Button showCurrencyExchanger;
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private int counter = 0;
     private ArrayAdapter<String> spinnerAdapter;
     private FragmentManager manager = getSupportFragmentManager();
-    private WorkWithMaps workWithMaps;
     private int couterMapVisible = 0;
     private LinearLayout mapContainer;
 
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         innitWidgets();
         new LoadDataFromPrivatBank().execute();
+
 
         showCurrencyExchanger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 new Network().getPrivatOtdel();
                 couterMapVisible++;
                 checkMapVisible(couterMapVisible);
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new WorkWithMaps(getBaseContext())).commit();
+                manager.beginTransaction().replace(R.id.container, new WorkWithMaps()).commit();
             }
         });
     }
@@ -200,21 +200,6 @@ public class MainActivity extends AppCompatActivity {
         mapContainer = (LinearLayout) findViewById(R.id.container);
         mapContainer.setVisibility(View.GONE);
     }
-
-    /*public void geodecoding(){
-        Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
-        try{
-            List<Address> addresses = geocoder.getFromLocationName("Відінська 13", 1);
-            if (addresses.size() > 0){
-                lat = addresses.get(0).getLatitude();
-                lng = addresses.get(0).getLongitude();
-
-                System.out.println("lat = " + lat + ", lng = " + lng);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
 
     public class LoadDataFromPrivatBank extends AsyncTask<Void, Void, Void> {
 
