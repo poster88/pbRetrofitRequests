@@ -1,8 +1,6 @@
 package com.example.poster.retrofitpbapi;
 
 
-import android.widget.Toast;
-
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
 import com.example.poster.retrofitpbapi.models.PrivatOtdelModel;
 
@@ -48,7 +46,7 @@ public class Network {
             public void onResponse(Call<List<PrivatOtdelModel>> call, Response<List<PrivatOtdelModel>> response) {
                 otdelModels = response.body();
                 for (PrivatOtdelModel model: otdelModels) {
-                    System.out.println(model.toString());
+                    //System.out.println(model.toString());
                 }
             }
 

@@ -7,8 +7,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class HttpDataHelper{
-    public HttpDataHelper() {
+public class HttpDataHandler {
+    public HttpDataHandler() {
     }
 
     public String getHTTPData(String requestURL){
@@ -24,8 +24,8 @@ public class HttpDataHelper{
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            int responceCode = conn.getResponseCode();
-            if (responceCode == HttpsURLConnection.HTTP_OK){
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpsURLConnection.HTTP_OK){
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line = br.readLine()) != null){

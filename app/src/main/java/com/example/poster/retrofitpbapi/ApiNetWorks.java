@@ -17,4 +17,3 @@ public interface ApiNetWorks {
     @GET("p24api/pboffice?json&city=Ровно&address=")
     Call<List<PrivatOtdelModel>> getPrivatOtdel(@Query("address") String address);
 }
-

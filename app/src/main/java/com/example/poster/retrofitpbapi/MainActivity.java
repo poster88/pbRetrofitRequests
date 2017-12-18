@@ -1,8 +1,13 @@
 package com.example.poster.retrofitpbapi;
 
 
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.poster.retrofitpbapi.models.ExchangeModel;
+
+import static com.example.poster.retrofitpbapi.WorkWithMaps.MY_PERMISSIONS_REQUEST_LOCATION;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -42,15 +49,16 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkLocationPermission();
         innitWidgets();
         new LoadDataFromPrivatBank().execute();
-
 
         showCurrencyExchanger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 counter++;
                 checkCurrContainerVisible(counter);
+                mapContainer.setVisibility(View.GONE);
             }
         });
 
@@ -66,21 +74,54 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-
         showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Network().getPrivatOtdel();
                 couterMapVisible++;
                 checkMapVisible(couterMapVisible);
-                manager.beginTransaction().replace(R.id.container, new WorkWithMaps()).commit();
             }
         });
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getParent(),
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                            }
+                        })
+                        .create()
+                        .show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION );
+            }
+        }
     }
 
     private void checkMapVisible(int couterMapVisible) {
         if (couterMapVisible % 2 == 1){
             mapContainer.setVisibility(View.VISIBLE);
+            manager.beginTransaction().replace(R.id.container, new WorkWithMaps()).commit();
         }else{
             mapContainer.setVisibility(View.GONE);
         }
